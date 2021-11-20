@@ -1,6 +1,11 @@
 node_modules/
 .cache/
+.yarn
+.yarnrc.yml
 public
+.pnp.cjs 
+.pnp.loader.mjs   
+yarn.lock
 
 # Local Netlify folder
 .netlify
