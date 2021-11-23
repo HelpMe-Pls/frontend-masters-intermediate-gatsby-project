@@ -42,32 +42,35 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 	//
 	//
 	//###### A Sample Query to display the use of those Types above ######
-	// query MyQuery {
-	//     allAuthor {
-	//       nodes {
-	//         books {
-	//           name
-	//           isbn
-	//         }
-	//         id
-	//         name
-	//         slug
-	//       }
-	//     }
-	//     allBook {
-	//       nodes {
-	//         isbn
-	//         name
-	//         seriesOrder
-	//         series
-	//         id
-	//         author {
-	//           name
-	//           slug
-	//         }
-	//       }
-	//     }
-	//   }
+	//	query MyQuery {
+	//		allAuthor {
+	//	  		nodes {
+	//				id
+	//				name
+	//				books {
+	//		  			name
+	//		  			isbn
+	//		    	}
+	//	  	   }
+	//		}
+	//		allBook {
+	//	  		nodes {
+	//				isbn
+	//				name
+	//				seriesOrder
+	//				series
+	//				id
+	//				author {
+	//		  			name
+	//		  			books {
+	//						name
+	//		  			}
+	//				}
+	//	  		}
+	//		}
+	//	}
+	// allAuthor: For each author, get all of their books.
+	// allBooks: For each book, get all of its info and then all of the other books from the same author.
 
 	authors.forEach((author) => {
 		createNode({
