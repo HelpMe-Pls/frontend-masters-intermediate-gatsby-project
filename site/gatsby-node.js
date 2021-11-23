@@ -18,7 +18,30 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
             author: Author! @link(from: "author", by: "slug")
         }
     `);
-	//###### A Sample Query to understand the @link above ######
+	//	###### Explaining the above Schema ######
+	// createTypes(`
+	//     type Author implements Node {
+	//         books: [Book!]! @link(from: "slug", by: "author.slug")
+	//	  	   [Book!]! is the {type Book}, used as an array.
+	//	  	   @link(from: "slug", by: "author.slug") is the foreign key points to the Book node
+	//		   {from: "slug"} is the {slug} field from THIS {type Author} (created by the "implements Node")
+	//		   {by: "author.slug"} is the {author.slug} field from the {type Book}, created by its foreign key
+	//     }
+	// 	   means that the {type Author} now have ALL FIELDS from the actual {authors} object (which has {slug, name, and every other fields from createNode below})
+	// 	   AND an additional field called {books} which acts as a foreign key to the {type Book} (which means THIS {books} field now has EVERY fields that the {type Book} has).
+
+	//     type Book implements Node {
+	//         author: Author! @link(from: "author", by: "slug")
+	//	       {from: "author"} is the {author} field from THIS {type Book} (created by the "implements Node")
+	//	       {by: "slug"} is the {slug} field from the {type Author}, created by its "implements Node"
+	//     }
+	//	   means that the {type Book} now have ALL FIELDS from the actual {books} object (which has {isbn, name, and every other fields from createNode below})
+	// 	   AND its {author} field is now has the form of the actual {authors} object
+	//	   and it also acts as a foreign key to the {type Author} (which means THIS {author} field now has EVERY fields that the {type Author} has).
+	// `);
+	//
+	//
+	//###### A Sample Query to display the use of those Types above ######
 	// query MyQuery {
 	//     allAuthor {
 	//       nodes {
