@@ -2,6 +2,7 @@ import * as React from 'react';
 import { graphql, Link, useStaticQuery } from 'gatsby';
 
 const AuthorsPage = () => {
+	// automatically get the data, based on file-based routing
 	const data = useStaticQuery(graphql`
 		query GetAllAuthors {
 			allAuthor {

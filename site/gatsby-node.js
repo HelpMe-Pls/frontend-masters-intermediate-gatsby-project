@@ -120,6 +120,11 @@ exports.createPages = async ({ actions, graphql }) => {
 			},
 		},
 	});
+	// When we created our author pages ({Author.slug}.js), you may remember that the books had different slugs
+	// depending on whether they were part of a series or not.
+	// For that reason, we can't use the file-based routing to create pages in this case.
+	// Instead, using the createPages API and some custom logic to create the book pages in the right place.
+
 	const result = await graphql(`
 		query GetBooks {
 			allBook {
@@ -137,6 +142,7 @@ exports.createPages = async ({ actions, graphql }) => {
 	books.forEach((book) => {
 		const bookSlug = slugify(book.name, { lower: true });
 
+		// These {createPage} creates the URL for a SINGULAR book, just like how the {Author.slug}.js filename is generated.
 		if (book.series === null) {
 			createPage({
 				path: `/book/${bookSlug}`,
