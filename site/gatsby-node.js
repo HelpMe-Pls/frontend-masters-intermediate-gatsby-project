@@ -2,6 +2,7 @@
 
 const fetch = require('node-fetch');
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`);
+const slugify = require('slugify');
 
 const authors = require('./src/data/authors.json');
 const books = require('./src/data/books.json');
@@ -76,6 +77,7 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 	// allBooks: For each book, get all of its info and then all of the other books from the same author.
 
 	authors.forEach((author) => {
+		// use forEach because we need to mutate the original object (authors)
 		createNode({
 			// other than required default fields you can add extra custom fields of your own
 			// according to Gatsby docs, it only takes JUST ONE OBJECT as an argument
@@ -105,7 +107,7 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 	});
 };
 
-exports.createPages = ({ actions }) => {
+exports.createPages = async ({ actions, graphql }) => {
 	const { createPage } = actions;
 	createPage({
 		path: '/custom', // The URL's endpoint for this page
@@ -117,6 +119,43 @@ exports.createPages = ({ actions }) => {
 				description: 'It is what it is',
 			},
 		},
+	});
+	const result = await graphql(`
+		query GetBooks {
+			allBook {
+				nodes {
+					id
+					series
+					name
+				}
+			}
+		}
+	`);
+
+	const books = result.data.allBook.nodes;
+
+	books.forEach((book) => {
+		const bookSlug = slugify(book.name, { lower: true });
+
+		if (book.series === null) {
+			createPage({
+				path: `/book/${bookSlug}`,
+				component: require.resolve('./src/templates/book.js'),
+				context: {
+					id: book.id,
+				},
+			});
+		} else {
+			const seriesSlug = slugify(book.series, { lower: true });
+
+			createPage({
+				path: `/book/${seriesSlug}/${bookSlug}`,
+				component: require.resolve('./src/templates/book.js'),
+				context: {
+					id: book.id,
+				},
+			});
+		}
 	});
 };
 

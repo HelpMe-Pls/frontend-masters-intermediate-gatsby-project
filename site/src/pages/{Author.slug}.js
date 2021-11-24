@@ -4,7 +4,6 @@ import slugify from 'slugify';
 
 export const query = graphql`
 	query AuthorPage($id: String!) {
-		# {$id} is the param
 		author(id: { eq: $id }) {
 			name
 			books {
@@ -17,10 +16,11 @@ export const query = graphql`
 	}
 `;
 
-const sortAndExtendBooks = (books) => {
+function sortAndExtendBooks(books) {
 	return books
 		.sort((a, b) => a.seriesOrder - b.seriesOrder)
 		.map((book) => {
+			// using map instead of forEach because forEach returns undefined
 			const series = book.series
 				? `(${book.series}, book ${book.seriesOrder})`
 				: '';
@@ -31,15 +31,15 @@ const sortAndExtendBooks = (books) => {
 			if (book.series !== null) {
 				const seriesSlug = slugify(book.series, { lower: true });
 				path = `/book/${seriesSlug}/${bookSlug}`;
+			} else {
+				path = `/book/${bookSlug}`;
 			}
-			path = `/book/${bookSlug}`;
 
 			return { displayName, path };
 		});
-};
+}
 
-const AuthorPage = ({ data }) => {
-	// {data} is the destructured prop of query's result, and it HAS TO BE used as-is because it's reserved by Gatsby
+export default function AuthorPage({ data }) {
 	const author = data.author;
 	const books = sortAndExtendBooks(author.books);
 
@@ -57,6 +57,4 @@ const AuthorPage = ({ data }) => {
 			<Link to="/authors">&larr; back to all authors</Link>
 		</div>
 	);
-};
-
-export default AuthorPage;
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql, Link, useStaticQuery } from 'gatsby';
 
-export default function AuthorsPage() {
+const AuthorsPage = () => {
 	const data = useStaticQuery(graphql`
 		query GetAllAuthors {
 			allAuthor {
@@ -27,4 +27,6 @@ export default function AuthorsPage() {
 			</ul>
 		</>
 	);
-}
+};
+
+export default AuthorsPage;
