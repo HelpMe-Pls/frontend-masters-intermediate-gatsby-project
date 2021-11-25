@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`);
 const slugify = require('slugify');
 
+// {import} does not support importing JSON files, so we're using {require} instead. Same for those statements above to maintain consistency.
 const authors = require('./src/data/authors.json');
 const books = require('./src/data/books.json');
 
@@ -12,7 +13,7 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 	// contains the functions and these can be individually extracted by using ES6 object destructuring.
 	const { createNode, createTypes } = actions;
 
-	// A GraphQL Schema
+	// A Schema to create a relationship between the nodes
 	createTypes(`   
         type Author implements Node {
             books: [Book!]! @link(from: "slug", by: "author.slug")
@@ -76,6 +77,7 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 	// allAuthor: For each author, get all of their books.
 	// allBooks: For each book, get all of its info and then all of the other books from the same author.
 
+	// Putting the data (as Nodes) into the Gatsby GraphQL's data layer
 	authors.forEach((author) => {
 		// use forEach because we need to mutate the original object (authors)
 		createNode({
@@ -205,6 +207,9 @@ exports.createResolvers = ({
 
 					const { covers } = await response.json();
 
+					// When building source plugins for remote data sources such as headless CMSs, their data will often link to files stored remotely
+					// that are often convenient to download so you can work with them locally.
+					// The createRemoteFileNode helper makes it easy to download remote files and add them to your site’s GraphQL schema
 					if (covers.length) {
 						return createRemoteFileNode({
 							url: `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg`,
