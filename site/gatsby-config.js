@@ -16,6 +16,6 @@ module.exports = {
 		'gatsby-plugin-image',
 		'gatsby-plugin-sharp',
 		'gatsby-transformer-sharp',
-		'gatsby-theme-shared-nav',
+		'gatsby-theme-shared-nav', // adding OUR custom theme
 	],
 };
