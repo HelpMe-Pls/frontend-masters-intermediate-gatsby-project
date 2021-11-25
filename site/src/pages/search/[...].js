@@ -1,3 +1,4 @@
+// The file is named as [...] so that ANYTHING after search/... will be handled by this file
 import * as React from 'react';
 import { navigate } from 'gatsby';
 
