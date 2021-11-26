@@ -2,6 +2,7 @@ module.exports = {
 	siteMetadata: {
 		title: 'My Book Club',
 		navItems: [
+			// Adding selections to the navbar
 			{
 				label: 'Books',
 				path: '/books',
@@ -9,6 +10,10 @@ module.exports = {
 			{
 				label: 'Authors',
 				path: '/authors',
+			},
+			{
+				label: 'Account',
+				path: '/account',
 			},
 		],
 	},
