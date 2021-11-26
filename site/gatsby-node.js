@@ -8,7 +8,11 @@ const slugify = require('slugify');
 const authors = require('./src/data/authors.json');
 const books = require('./src/data/books.json');
 
-exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
+exports.createSchemaCustomization = ({
+	actions,
+	createNodeId,
+	createContentDigest,
+}) => {
 	// The object {actions} -- https://www.gatsbyjs.com/docs/reference/config-files/actions/#createNode
 	// contains the functions and these can be individually extracted by using ES6 object destructuring.
 	const { createNode, createTypes } = actions;
