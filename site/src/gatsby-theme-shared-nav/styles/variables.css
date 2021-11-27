@@ -1,4 +1,4 @@
-/* Overriding a theme */
+/* File shadowing: to override a theme */
 :root {
 	--black: darkblue;
 	--white: #fff;
