@@ -117,7 +117,7 @@ exports.createPages = async ({ actions, graphql }) => {
 	const { createPage } = actions;
 	createPage({
 		path: '/custom', // The URL's endpoint for this page
-		component: require.resolve('./src/templates/custom.js'),
+		component: require.resolve('./src/templates/custom.js'), // the actual material to create the page
 		context: {
 			// this is why it makes sense to use Gatsby's Node API instead of create your own page
 			title: 'A Random Page',
