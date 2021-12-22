@@ -4,6 +4,7 @@ import slugify from 'slugify';
 
 export const query = graphql`
 	query AuthorPage($id: String!) {
+		# $id is retrieved from the pageContext
 		author(id: { eq: $id }) {
 			name
 			books {
